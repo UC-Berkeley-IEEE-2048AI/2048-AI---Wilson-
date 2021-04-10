@@ -29,7 +29,7 @@ def heuristics(grid, num_empty):
     for j in range(len(grid[i]) - 1):
       if(grid[i][j] > grid[i][j + 1]):
         score -= 1
-      else:
+      elif(grid[i][j] < grid[i][j + 1]):
         score += 1
 
   # check that it's increasing from top to bottom
@@ -37,9 +37,21 @@ def heuristics(grid, num_empty):
     for j in range(len(grid[i]) - 1):
       if(grid[j][i] > grid[j + 1][i]):
         score -= 1
-      else:
+      elif(grid[j][i] < grid[j + 1][i]):
         score += 1
         
   # check smoothness
   smoothness = 0
-  return score - large_tile_penalty + smoothness + num_empty
+  # check that it's smooth from left to right
+  for i in range(len(grid)):
+    for j in range(len(grid[i]) - 1):
+      if(grid[i][j] == grid[i][j + 1]):
+        smoothness += 1
+
+  # check that it's smooth from top to bottom
+  for i in range(len(grid)):
+    for j in range(len(grid[i]) - 1):
+      if(grid[j][i] == grid[j + 1][i]):
+        smoothness += 1
+        
+  return score - (5 * large_tile_penalty) + smoothness + (2 * num_empty)
