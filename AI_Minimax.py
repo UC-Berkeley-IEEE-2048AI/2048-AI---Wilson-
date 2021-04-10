@@ -6,7 +6,7 @@ import random
 
 # The Depth limit constant. You might change this if you want
 # Keep in mind that your AI search might be pretty slow if you use too high depth
-DEPTH = 6
+DEPTH = 4
 
 def same(old_grid, new_grid):
   for i in range(len(old_grid)):
@@ -70,8 +70,8 @@ def minimize(grid, depth = 0, alpha = float("-inf"), beta = float("inf")):
 
   sum_score = 0
 
-  for i in random.sample(range(len(empty_cells)), min(len(empty_cells),4)):
-    r,c = empty_cells[i]
+  for r,c in empty_cells: #random.sample(range(len(empty_cells)), min(len(empty_cells),4)):
+    #r,c = empty_cells[i]
     for v in [2, 4]:
       new_grid = deepcopy(grid)
       new_grid[c][r] = v

@@ -24,21 +24,22 @@ def heuristics(grid, num_empty):
   
   # checking monotonicity
   # check that it's increasing from left to right
-  score = 0
+  monolr = 0
   for i in range(len(grid)):
     for j in range(len(grid[i]) - 1):
       if(grid[i][j] > grid[i][j + 1]):
-        score -= 1
+        monolr -= 1 + (math.log(grid[i][j] + 1) + math.log(grid[i][j + 1] + 1))/10
       elif(grid[i][j] < grid[i][j + 1]):
-        score += 1
+        monolr +=  1 + (math.log(grid[i][j] + 1) + math.log(grid[i][j + 1] + 1))/10
 
   # check that it's increasing from top to bottom
+  monotd = 0
   for i in range(len(grid)):
     for j in range(len(grid[i]) - 1):
       if(grid[j][i] > grid[j + 1][i]):
-        score -= 1
+        monotd -= 1 + (math.log(grid[j][i] + 1) + math.log(grid[j + 1][i] + 1))/10
       elif(grid[j][i] < grid[j + 1][i]):
-        score += 1
+        monotd += 1 + (math.log(grid[j][i] + 1) + math.log(grid[j + 1][i] + 1))/10
         
   # check smoothness
   smoothness = 0
@@ -54,4 +55,4 @@ def heuristics(grid, num_empty):
       if(grid[j][i] == grid[j + 1][i]):
         smoothness += 1
         
-  return score - (5 * large_tile_penalty) + smoothness + (2 * num_empty)
+  return monolr + monotd - (10 * large_tile_penalty) + smoothness + (2 * num_empty)
