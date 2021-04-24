@@ -63,8 +63,8 @@ def run_game(game_class=Game2048, title='2048!', data_dir='save'):
   screen = pygame.display.set_mode((game_class.WIDTH, game_class.HEIGHT))
   # screen = pygame.display.set_mode((50, 20))
   manager = GameManager(Game2048, screen,
-              os.path.join(data_dir, '2048.score'),
-              os.path.join(data_dir, '2048.%d.state'))
+              os.path.join(data_dir, '2048.score')
+              ,os.path.join(data_dir, '2048.%d.state'))
 
   # This will faster the animation
   manager.game.ANIMATION_FRAMES = 1

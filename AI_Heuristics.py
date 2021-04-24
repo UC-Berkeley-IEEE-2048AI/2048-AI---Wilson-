@@ -20,7 +20,7 @@ def heuristics(grid, num_empty):
             max_val = grid[i][j]
             max_r = i
             max_c = j
-  large_tile_penalty = 6 - max_r - max_c
+  large_tile_penalty = (6 - max_r - max_c)*math.log(max_val)
   
   # checking monotonicity
   # check that it's increasing from left to right
@@ -55,4 +55,4 @@ def heuristics(grid, num_empty):
       if(grid[j][i] == grid[j + 1][i]):
         smoothness += 1
         
-  return monolr + monotd - (10 * large_tile_penalty) + smoothness + (2 * num_empty)
+  return monolr + monotd - (5 * large_tile_penalty) + smoothness + (2 * num_empty)
