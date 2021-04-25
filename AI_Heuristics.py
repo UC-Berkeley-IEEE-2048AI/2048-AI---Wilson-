@@ -1,5 +1,8 @@
 import numpy as np, math
 from copy import deepcopy
+smoothWeight = 0.5
+monoWeight  = 1.0
+emptyWeight  = 2.7
 def heuristics(grid, num_empty):
   '''
   This function scores the grid based on the algorithm implemented
@@ -20,7 +23,7 @@ def heuristics(grid, num_empty):
             max_val = grid[i][j]
             max_r = i
             max_c = j
-  large_tile_penalty = (6 - max_r - max_c)*math.log(max_val)
+  large_tile_penalty = (6 - max_r - max_c)# + math.log(max_val)/15
   
   # checking monotonicity
   # check that it's increasing from left to right
@@ -28,18 +31,18 @@ def heuristics(grid, num_empty):
   for i in range(len(grid)):
     for j in range(len(grid[i]) - 1):
       if(grid[i][j] > grid[i][j + 1]):
-        monolr -= 1 + (math.log(grid[i][j] + 1) + math.log(grid[i][j + 1] + 1))/10
+        monolr -= 1# + (math.log(grid[i][j] + 1) + math.log(grid[i][j + 1] + 1))/1000
       elif(grid[i][j] < grid[i][j + 1]):
-        monolr +=  1 + (math.log(grid[i][j] + 1) + math.log(grid[i][j + 1] + 1))/10
+        monolr +=  1# + (math.log(grid[i][j] + 1) + math.log(grid[i][j + 1] + 1))/1000
 
   # check that it's increasing from top to bottom
   monotd = 0
   for i in range(len(grid)):
     for j in range(len(grid[i]) - 1):
       if(grid[j][i] > grid[j + 1][i]):
-        monotd -= 1 + (math.log(grid[j][i] + 1) + math.log(grid[j + 1][i] + 1))/10
+        monotd -= 1# + (math.log(grid[j][i] + 1) + math.log(grid[j + 1][i] + 1))/1000
       elif(grid[j][i] < grid[j + 1][i]):
-        monotd += 1 + (math.log(grid[j][i] + 1) + math.log(grid[j + 1][i] + 1))/10
+        monotd += 1# + (math.log(grid[j][i] + 1) + math.log(grid[j + 1][i] + 1))/1000
         
   # check smoothness
   smoothness = 0
@@ -55,4 +58,4 @@ def heuristics(grid, num_empty):
       if(grid[j][i] == grid[j + 1][i]):
         smoothness += 1
         
-  return monolr + monotd - (5 * large_tile_penalty) + smoothness + (2 * num_empty)
+  return (monoWeight * (monolr + monotd)) - (max(5, math.log(max_val,3)) * large_tile_penalty) + (smoothWeight * smoothness) + (emptyWeight * num_empty)
